@@ -8,6 +8,29 @@ To get started with this project, see the following prerequisites:
 1. Install Node.js on your computer
 2. Add the Metamask wallet extension to your web browser
 
+
+### Local Setup
+
+git clone https://github.com/dabit3/polygon-ethereum-nextjs-marketplace.git
+
+cd `polygon-ethereum-nextjs-marketplace`
+
+# install using NPM or Yarn
+`npm install`
+
+# or
+
+`yarn`
+
+# Start the local Hardhat node
+`npx hardhat node`
+
+# Deploy smart contracts to local network in a separate terminal window
+`npx hardhat run scripts/deploy.js --network localhost`
+
+# Start App
+`npm run dev`
+
 1. cd into the `app` folder
 2. Run `npm install` at the root of your directory
 3. Run `npm run start` to start the project
