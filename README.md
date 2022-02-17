@@ -34,10 +34,7 @@ cd `polygon-ethereum-nextjs-marketplace`
 1. cd into the `app` folder
 2. Run `npm install` at the root of your directory
 3. Run `npm run start` to start the project
-4. Start coding!
-
-### What is the .vscode Folder?
-If you use VSCode to build your app, we included a list of suggested extensions that will help you build this project! Once you open this project in VSCode, you will see a popup asking if you want to download the recommended extensions :).
+4. Start coding :)
 
 ### Questions?
 This project was put together by Nader Dabit (https://github.com/dabit3). So if you have any questions, it's best to refer to the comments made by others at the links below - as they likely would have found the answers to your questions already. Due to how my brain retains data, I've left extensive notes on my code. To supplement this however, I will also be uploading my code without any comments soon.
