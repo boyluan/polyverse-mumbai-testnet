@@ -15,18 +15,21 @@ import Web3Modal from "web3modal";
 
 // Next, we want to import the references to the nftaddress, and nftmarketaddress from our configuration
 // Similar to (Line: 28) in our 'index.js' file
-// And similar to (Line: 31) in our 'create-item.js' file
+// Similar to (Line: 31) in our 'create-item.js' file
+// And similar to (Line: 20) in our 'creator-dashboard.js' file
 import {
     nftaddress, nftmarketaddress
 } from '../config'
 
 // We're importing a reference to our nft abi
 // The directory route: ../artifacts/contracts/NFT.sol/{}NFT.json
-import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
+// import NFT from '../artifacts/contracts/NFT.sol/NFT.json' {{ DEFUNCT }}
+import NFT from '../utils/NFT.json'
 
 // And importing a reference to our market abi
 // The directory route: ../artifacts/contracts/NFTMarket.sol/{}NFTMarket.json
-import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+// import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json' {{ DEFUNCT }}
+import Market from '../utils/NFTMarket.json'
 
 
 // We have our main component name called 'MyAssets'
@@ -57,7 +60,7 @@ export default function MyAssets() {
         const provider = new ethers.providers.Web3Provider(connection)
         const signer = provider.getSigner()
 
-        // So we're using the 'signer' (see Line: 58) to get a reference to the marketContract
+        // So we're using the 'signer' (see Line: 61) above, to get a reference to the marketContract
         // Because we actually need to know the message.sender
         // Meaning that if we navigate to this page, and we haven't already authenticated with a wallet (contd. below)
         // We will automatically see that wallet modal pop up

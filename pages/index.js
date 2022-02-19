@@ -50,12 +50,14 @@ import {
 // And reference them in the index.js file that we're working in
 
 // So the first thing we'll import is the nft abi
-// The directory route: ../artifacts/contracts/NFT.sol/{}NFT.json
-import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
+// This is the localized directory route: ../artifacts/contracts/NFT.sol/{}NFT.json (see create-item.js Lines: 41-47)
+// import NFT from '../artifacts/contracts/NFT.sol/NFT.json' {{ DEFUNCT }}
+import NFT from '../utils/NFT.json'
 
 // The second thing we'll import is the nft Market abi
-// The directory route: ../artifacts/contracts/NFTMarket.sol/{}NFTMarket.json
-import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+// The directory route: ../artifacts/contracts/NFTMarket.sol/{}NFTMarket.json (see create-item.js Lines: 41-47)
+// import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json' {{ DEFUNCT }}
+import Market from '../utils/NFTMarket.json'
 
 // Now don't really worry about what's going on in those json files
 // As this is just how just how the ethers client is going to know how to interact with the smart contracts - using the above abi's
@@ -84,6 +86,9 @@ if (process.env.NEXT_PUBLIC_WORKSPACE_URL) {
 export default function Home() {
   // Section 5 ^^ \\
 
+  // const NFT = NFT.abi
+  // const Market = NFTMarket.abi
+
   // So we've imported our references to our 'NFT' and our 'Market' abi's
   // Let's go ahead and create our initial state, that we're going to be working with in this component
   // We're going to have 2 pieces of State (contd.below):
@@ -103,7 +108,7 @@ export default function Home() {
   // And that's a good way for us to keep up with where the application currently is, in the lifecycle
   const [loadingState, setLoadingState] = useState('not-loaded')
 
-  // So one of the functions we're going to need to create is called 'loadNFTs' (Line: 119)
+  // So one of the functions we're going to need to create is called 'loadNFTs' (Line: 124)
   // And this is going to be where we call our smart contract and fetch our NFTs
   // And typically you'll want this function to be called when the app loads, or when the component loads
   // So the way we can invoke this function when the app loads, is by using the useEffect hook (in Line: 8)
@@ -133,7 +138,7 @@ export default function Home() {
     // Because what we're basically going to do, is we're going to fetch the market items
     // And then we need to map over the market items
     // And we want to get the tokenURI by interacting with the token contract
-    // So we basically need both of those (both Line: 130 & Line: 137)
+    // So we basically need both of those (both Line: 135 & Line: 142)
     const marketContract = new ethers.Contract(nftmarketaddress, Market.abi, provider)
 
     // The next thing we want to do is to actually go ahead and get the data
@@ -169,7 +174,7 @@ export default function Home() {
       // So we're going to have an item OBJECT
       // But we want to format the price
       // Because when it comes back, it will be in a format we can't really use
-      // So to format, we call ethers.utils.formatUnits (in Line: 168) - passing in the price > toString, and saying 'ether'
+      // So to format, we call ethers.utils.formatUnits (in Line: 173) - passing in the price > toString, and saying 'ether'
       // And this way we can show a main value of 5, 10, 20, 100 etc $MATIC, for example - as opposed to 18 zeros appended to that
       // In addition to the price, we want to return a couple of other values
       // We want to set the tokenId, seller, owner, image (which is coming off that metadata), the name, and description
@@ -204,7 +209,7 @@ export default function Home() {
   // So we're going to create a function called buyNft
   // And this will allow the user to connect to their wallet
   async function buyNft(nft) {
-    // To connect to the wallet, we say (see Line: 206)
+    // To connect to the wallet, we say (see Line: 211)
     // And this is going to go ahead and look for the instance of the ethereum being injected into the web browser
     const web3Modal = new Web3Modal()
     // If the user is connected, then we will have a connection that we can work with
@@ -228,7 +233,7 @@ export default function Home() {
     // The next thing we'll do is we want to get a reference to the price
     // The price is coming is as an argument off of the NFT
     // So we're going to be mapping over the NFT
-    // In the loadNfts function (in Line: 119), we have a reference to the price
+    // In the loadNfts function (in Line: 124), we have a reference to the price
     // And that price is going to be available to us as {{ nft.price }}
     // So we'll say nft.price.toString - and we're gonna be parsing that
     // And we'll basically be transforming that back from that basic string, and into a number that we can use here
@@ -253,12 +258,12 @@ export default function Home() {
     // Because we want to go ahead and remove that NFT by reloading
     // And calling loadNFTS in our case, again
     // So after the transaction has occurred, loadNFTS should now have 1 less NFT
-    // Because buyNfts (at Line: 206) only shows the NFTS that are not yet sold
+    // Because buyNfts (at Line: 211) only shows the NFTS that are not yet sold
     // And since we just sold that NFT, it should not show up anymore
     loadNFTs()
 
     // We now have our functionality completed, in terms of the actual code
-    // So now we can proceed to updating our main UI (see Line: 281)
+    // So now we can proceed to updating our main UI (see Line: 286)
 
     // We only had 2 main functions:
     // 1) One for loading the unsold NFTs
@@ -290,7 +295,7 @@ export default function Home() {
       // This is our CHILD container -- Level 2 div
       */}
       <div className="px-4" style={{ maxWidth: '1600px' }}>
-        {/* The next thing we'll do, is we'll have one more <div> inside the initial <div> (at Line: 284)
+        {/* The next thing we'll do, is we'll have one more <div> inside the initial <div> (at Line: 289)
         // So we're kind of going nested now, to where we have 3 levels of div's
         // This is our GRID container -- Level 3 div
         // And this is a cool way to kind of have a responsive design
@@ -308,9 +313,9 @@ export default function Home() {
           */}
 
           {/* We want to display: the nft image, name, description, and price
-          // We also want to create a way for the user to purchase the NFT (see Line: 327)
+          // We also want to create a way for the user to purchase the NFT (see Line: 332)
           // The button allows the user to say 'buyNft' -- passing in the NFT
-          // And then this invokes the buyNft function (from Line: 206)
+          // And then this invokes the buyNft function (from Line: 211)
           */}
           {
             nfts.map((nft, i) => (

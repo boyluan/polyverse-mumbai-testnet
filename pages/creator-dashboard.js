@@ -21,13 +21,19 @@ import {
     nftaddress, nftmarketaddress
 } from '../config'
 
-// We're importing a reference to our nft abi
-// The directory route: ../artifacts/contracts/NFT.sol/{}NFT.json
-import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
+// We'll go ahead and import our NFT reference
+// import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 
-// And importing a reference to our market abi
-// The directory route: ../artifacts/contracts/NFTMarket.sol/{}NFTMarket.json
-import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+// As well as our NFTMarket reference for our abi's
+// import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+
+// The above imports ONLY work when deploying locally (contd. below)
+// But in order to deploy to Vercel, I need to create a reference to my abi files (via a 'utils' folder at the root of my directory)
+// Then declare it as a constant (see Lines: 48 & 50) --  {{ DEFUNCT }}
+
+import NFT from '../utils/NFT.json'
+
+import Market from '../utils/NFTMarket.json'
 
 
 // We want to have a component called 'CreatorDashboard'
@@ -39,6 +45,10 @@ export default function CreatorDashboard() {
     // So we're going to have 2 different views
     const [sold, setSold] = useState([])
 
+    // const NFT = NFT.abi
+
+    // const Market = NFTMarket.abi
+
     // Similar to (Line: 40) in our 'my-assets.js' file, we have our loading state
     // We have our setLoadingState
     const [loadingState, setLoadingState] = useState('not-loaded')
@@ -47,10 +57,10 @@ export default function CreatorDashboard() {
     }, [])
 
     // We have our loadNfts function
-    // Very similar to our previous 'loadsNfts' function (see: Line 54) in our 'my-assets.js' file
+    // Very similar to our previous 'loadsNfts' function (see: Line 57) in our 'my-assets.js' file
     // The main difference is that right now, we have our items array that we've been working with (contd. below):
     // Where we map over the items
-    // We also want to create a separate items array (Go to Line: 80)
+    // We also want to create a separate items array (Go to Line: 74)
     async function loadNfts() {
         const web3Modal = new Web3Modal()
         const connection = await web3Modal.connect()
@@ -77,7 +87,7 @@ export default function CreatorDashboard() {
         }))
 
         // We also want to create a separate items array
-        // Where we filter through the items array above (see Line: 64)
+        // Where we filter through the items array above (see Line: 74)
         // And we also attach a check to see if the item is sold
         // So we now have 2 arrays:
         // 1) the array with all of the items we've created 2) and one only for the sold items
@@ -93,18 +103,18 @@ export default function CreatorDashboard() {
     // 1) We first want to show a list of all of the items we've created
     // 2) And then we also want to have a view of only the items that have sold
 
-    // Step 1: is to map over all of the nft's (Line: 110)
+    // Step 1: is to map over all of the nft's (Line: 120)
     // And we're returning all of the items we've created, period.
-    // Step 2: We also want to have a separate view (see Line: 125)
+    // Step 2: We also want to have a separate view (see Line: 135)
     // This will be slightly different, as we want to see IF there are any items in this array at all
     // And if there are, then we want to go ahead and map them over
     // Or, in reality it's just literally an array
     // But the main difference is that we can show and toggle a title if there are items that have been sold (contd. below)
-    // By doing some logic like this (see Line: 127)
+    // By doing some logic like this (see Line: 137)
     // Where we say 'boolean(sold.length)':
-    // Meaning if this is TRUE, then we can actually go ahead and return a <div> (see Line: 128)
+    // Meaning if this is TRUE, then we can actually go ahead and return a <div> (see Line: 138)
     // This div will hold all of the UI we want to show in this case
-    // And finally, we can go ahead and map over that array of items (see Line: 132)
+    // And finally, we can go ahead and map over that array of items (see Line: 142)
     return (
         <div>
             <div className="p-4">

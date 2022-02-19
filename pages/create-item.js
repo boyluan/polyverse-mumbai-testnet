@@ -33,10 +33,18 @@ import {
 } from '../config'
 
 // We'll go ahead and import our NFT reference
-import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
+// import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 
 // As well as our NFTMarket reference for our abi's
-import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+// import Market from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+
+// The above imports ONLY work when deploying locally (contd. below)
+// But in order to deploy to Vercel, I need to create a reference to my abi files (via a 'utils' folder at the root of my directory)
+// Then declare it as a constant (see Lines: 65 & 67) {{ DEFUNCT }}
+
+import NFT from '../utils/NFT.json'
+
+import Market from '../utils/NFTMarket.json'
 
 // The next thing we'll do is define our default export - or our component
 // And we want to create a couple of pieces of local state, using useState
@@ -54,6 +62,10 @@ export default function CreateItem () {
     // And this object is going to contain the NFT's price, the name, and description values
     const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' })
 
+    // const NFT = NFT.abi
+
+    // const Market = NFTMarket.abi
+
     // The next thing we'll do is create a reference to the router, using the useRouter hook
     // And we'll be using that in just a moment
     const router = useRouter()
@@ -62,7 +74,7 @@ export default function CreateItem () {
     // And we have 3 functions that we'll be creating here
 
     // 1) The first function is for CREATING and UPDATING the file url
-    // Because right now it's set to 'null' (see Line: 46)
+    // Because right now it's set to 'null' (see Line: 54)
     // And we're gonna have a form input
     // So we can have a function called 'onChange'
     // And then we'll attach this to the input for the user's file input
@@ -83,7 +95,7 @@ export default function CreateItem () {
                     progress: (prog) => console.log(`received: ${prog}`)
                 }
             )
-            // Once the upload is complete, we'll have a reference to that 'added' variable (in Line: 78)
+            // Once the upload is complete, we'll have a reference to that 'added' variable (in Line: 90)
             // Using that variable, we can now set the url of where that file is now located
             // Because we know it's going to be at 'ipfs.infura.io/ipfs'
             // And we can say the: /${added.path} is the path that's given to us after the upload
@@ -121,7 +133,7 @@ export default function CreateItem () {
             name, description, image: fileUrl
         })
 
-        // And then we can save this value to ipfs, using the same method we did above (see Line: 78)
+        // And then we can save this value to ipfs, using the same method we did above (see Line: 90)
         // Where we called 'client.add' in the 'added' variable
         try {
             const added = await client.add(data)
@@ -138,13 +150,13 @@ export default function CreateItem () {
     }
 
     // ii) The second function will allow the user to LIST the item for sale
-    // And then with that url (see Line: 131)
+    // And then with that url (see Line: 143)
     // We can set this url as the tokenURL by calling the function below, called 'createSale'
 
     // Think of 'createSale' as listing an item for sale
     // But we're also creating the NFT in the same function -- so we essentially have 2 things going on
     async function createSale(url) {
-        // It's very similar to how we worked with web3Modal previously (see index.js - Line: 209)
+        // It's very similar to how we worked with web3Modal previously (see index.js - Line: 214)
         const web3Modal = new Web3Modal()
         // We call a reference to 'web3Modal.connect'
         const connection = await web3Modal.connect()
@@ -223,17 +235,17 @@ export default function CreateItem () {
     // The first <div> is going to be a flexbox container - justify center
     // The the second is going to basically set the width as one-half
     // It's pretty generic, and probably not perfect on a responsive site, but it's a good start
-    // 1) Input #1 sets the name [Line: 238] 2) Input #2 sets the description [Line: 248] 3) And input #3 sets the price [Line: 256]
+    // 1) Input #1 sets the name [Line: 250] 2) Input #2 sets the description [Line: 260] 3) And input #3 sets the price [Line: 268]
     return (
         <div className="flex justify-center">
             <div className="w-1/2 flex flex-col pb-12">
                 {/* The next thing we're going to do, is have inputs for the asset/nft name
                 // Here, we're calling the placeholder of asset name
-                // And we're gonna call 'updateFormInput' (see Line: 241)
-                // So whenever someone types into this ('onChange' - Line: 241), we'll be updating that local form input variable
+                // And we're gonna call 'updateFormInput' (see Line: 263)
+                // So whenever someone types into this ('onChange' - Line: 263), we'll be updating that local form input variable
                 // 'updateFormInput' will basically return all of the existing form input
                 // And it will only change the name i.e. 'Asset Name'
-                // So we're setting the name, and setting the value to be 'event.target.value' (Line: 241)
+                // So we're setting the name, and setting the value to be 'event.target.value' (Line: 263)
                 */}
                 <input
                     placeholder="Asset Name"
@@ -243,7 +255,7 @@ export default function CreateItem () {
                 {/* For the description, we're not just using a basic input
                 // We're going to use a 'text area' to give the user a little bit more room to type
                 // But a very similar thing happening on the 'onChange' handler
-                // Where, instead of setting the name like we did above (see Line: 241), we're setting the 'description'
+                // Where, instead of setting the name like we did above (see Line: 263), we're setting the 'description'
                 */}
                 <textarea
                     placeholder="Asset Description"
@@ -259,8 +271,8 @@ export default function CreateItem () {
                     onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
                 />
                 {/* Then finally, we want to go ahead and show the fileInput
-                // Rather than using input with an 'onChange' handler, like with the event being passed similar to (see Lines: 241, 251, & 259)
-                // Instead, we're just going to call this 'onChange' handler that we defined above (see Line: 69)
+                // Rather than using input with an 'onChange' handler, like with the event being passed similar to (see Lines: 253, 263, & 271)
+                // Instead, we're just going to call this 'onChange' handler that we defined above (see Line: 81)
                 // And we set the 'type' of input to be 'file'
                 */}
                 <input
@@ -269,7 +281,7 @@ export default function CreateItem () {
                     className="my-4"
                     onChange={onChange}
                 />
-                {/* Following on from (Lines: 280-284)
+                {/* Following on from (Lines: 292-296)
                 // The last thing we might want to do is show a preview of the file
                 // So to do that, I'll say:
                 // If there is a fileUrl (meaning that they've uploaded a file)
@@ -284,7 +296,7 @@ export default function CreateItem () {
                 // We're adding a className to it, to give it a little bit of styling
                 // So we have a button with bold font, a margin, and a background etc
                 // And the inputs we're working with have their own className's as well (margin, border, padding etc) **
-                // Be sure to reference the 'createItem' function (see: Line 110) above
+                // Be sure to reference the 'createItem' function (see: Line 122) above
                 */}
                 <button
                     onClick={createItem}
